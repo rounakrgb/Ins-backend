@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+pyjwt
+sqlalchemy
+psycopg2-binary
+bcrypt
+python-multipart
