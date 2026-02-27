@@ -38,6 +38,10 @@ Base.metadata.create_all(bind=engine)
 def root():
     return {"message": "API Running 🚀"}
 
+@app.get("/about")
+def about_us():
+    return {"message":"this is in order to make sure that u do sees the about us information here not the typcial ones"}
+
 
 @app.post("/signup")
 def signup(request: SignupRequest, db: Session = Depends(get_db)):
@@ -160,14 +164,14 @@ def update_profile(
 
 
 
-# @app.get("/Name")
-# def show_name(name:str):
-#     return {"message": name}
+@app.get("/Name")
+def show_name(name:str):
+    return {"message": name}
     
-# @app.get("/Name/{name}")
-# def show_name_by_path(name):
-#     return {"msg":name}    
+@app.get("/Name/{name}")
+def show_name_by_path(name):
+    return {"msg":name}    
 
-# @app.post("/items/")
-# def create_items(item: Item):
-#     return item
+@app.post("/items/")
+def create_items(item: Item):
+    return item
