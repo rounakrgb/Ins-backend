@@ -1,3 +1,5 @@
+#import pdb; pdb.set_trace()
+
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
@@ -155,6 +157,7 @@ def update_profile(
     db.refresh(profile)
 
     return {"message": "Profile saved successfully"}
+
 
 
 # @app.get("/Name")
