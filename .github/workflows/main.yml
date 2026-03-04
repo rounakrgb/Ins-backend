@@ -10,6 +10,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: pass123
+          POSTGRES_DB: Login_data
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="png_isready -U postgres"
+          --health-internval=10s
+          --health-timeout=5s
+          --healt-retires=5
+
+        env:
+          DATABASE_URL: postgresql://postgres:pass123@localhost:5432/loign_data
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
