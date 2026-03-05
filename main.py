@@ -52,7 +52,7 @@ tags_metadata = [
     
 ]
 
-app = FastAPI(tags= tags_metadata)
+app = FastAPI(openapi_tags= tags_metadata)
 
 security = HTTPBearer(auto_error=False)
 
@@ -91,7 +91,7 @@ def signup(request: SignupRequest, db: Session = Depends(get_db)):
 
     return {"message": "User created successfully"}
 
-@app.post("/login",tag=["Auth"])
+@app.post("/login",tags=["Auth"])
 def login(request: LoginRequest, db: Session = Depends(get_db)):
 
     user = db.query(User).filter(User.username == request.username).first()
@@ -131,7 +131,7 @@ def get_current_user(
     except Exception as e:
         raise HTTPException(status_code=401, detail=f"Token decode error: {str(e)}")
     
-    print(f"Decoded payload: {payload}")
+    #print(f"Decoded payload: {payload}")
     user_id = payload.get("sub")
     if user_id is None:
         raise HTTPException(status_code=401, detail="Invalid token: no user id")
@@ -163,7 +163,7 @@ def get_all_users(
     }
     
     
-@app.put("/profile",tags = ["Update_Profiles"])
+@app.put("/profile",tags = ["Update_Profile"])
 def update_profile(
     data: ProfileUpdate,
     current_user: User = Depends(get_current_user),
@@ -194,7 +194,7 @@ def show_name(name:str):
     return {"message": name}
     
 @app.get("/Name/{name}")
-def show_name_by_path(name):
+def show_name_by_path(name:str):
     return {"msg":name}    
 
 @app.post("/items/")
