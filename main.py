@@ -1,6 +1,6 @@
 #import pdb; pdb.set_trace()
 
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, APIRouter
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 import bcrypt
@@ -34,16 +34,16 @@ security = HTTPBearer(auto_error=False)
 Base.metadata.create_all(bind=engine)
 
 
-@app.get("/")
+@app.get("/",tags = "General")
 def root():
     return {"message": "API Running 🚀"}
 
-@app.get("/about")
+@app.get("/about",tags = "General")
 def about_us():
     return {"message":"this is in order to make sure that u do sees the about us information here not the typcial ones"}
 
 
-@app.post("/signup")
+@app.post("/signup",tags = "Auth")
 def signup(request: SignupRequest, db: Session = Depends(get_db)):
 
     existing_user = db.query(User).filter(User.username == request.username).first()
@@ -66,7 +66,7 @@ def signup(request: SignupRequest, db: Session = Depends(get_db)):
 
     return {"message": "User created successfully"}
 
-@app.post("/login")
+@app.post("/login",tag="Auth")
 def login(request: LoginRequest, db: Session = Depends(get_db)):
 
     user = db.query(User).filter(User.username == request.username).first()
@@ -125,7 +125,7 @@ def get_current_user(
     
 
 
-@app.get("/users")
+@app.get("/users",tags = "Get Users")
 def get_all_users(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
@@ -138,7 +138,7 @@ def get_all_users(
     }
     
     
-@app.put("/profile")
+@app.put("/profile",tags = "Update Profile")
 def update_profile(
     data: ProfileUpdate,
     current_user: User = Depends(get_current_user),
