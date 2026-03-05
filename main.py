@@ -30,7 +30,7 @@ class ProfileUpdate(BaseModel):
 
 
 
-tags_metadata = tags_metadata = [
+tags_metadata = [
     {
         "name": "General",
         "description": "Operations with users. The **login** logic is also here.",
@@ -52,7 +52,7 @@ tags_metadata = tags_metadata = [
     
 ]
 
-app = FastAPI(openapi_tags= tags_metadata)
+app = FastAPI(tags= tags_metadata)
 
 security = HTTPBearer(auto_error=False)
 
