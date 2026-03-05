@@ -28,22 +28,47 @@ class ProfileUpdate(BaseModel):
     bio:str
     age:int    
 
-app = FastAPI()
+
+
+tags_metadata = tags_metadata = [
+    {
+        "name": "General",
+        "description": "Operations with users. The **login** logic is also here.",
+    },
+    {
+        "name": "Auth",
+        "description": "Operations with users. The **login** logic is also here.",
+    
+    },
+    {
+    "name": "Get_Users",
+        "description": "Operations with users. The **login** logic is also here.",
+    },
+    {
+        "name": "Update_Profile",
+        "description": "Operations with users. The **login** logic is also here.",
+    
+    }
+    
+]
+
+app = FastAPI(openapi_tags= tags_metadata)
+
 security = HTTPBearer(auto_error=False)
 
 Base.metadata.create_all(bind=engine)
 
 
-@app.get("/",tags = "General")
+@app.get("/",tags = ["General"])
 def root():
     return {"message": "API Running 🚀"}
 
-@app.get("/about",tags = "General")
+@app.get("/about",tags = ["General"])
 def about_us():
     return {"message":"this is in order to make sure that u do sees the about us information here not the typcial ones"}
 
 
-@app.post("/signup",tags = "Auth")
+@app.post("/signup",tags = ["Auth"])
 def signup(request: SignupRequest, db: Session = Depends(get_db)):
 
     existing_user = db.query(User).filter(User.username == request.username).first()
@@ -66,7 +91,7 @@ def signup(request: SignupRequest, db: Session = Depends(get_db)):
 
     return {"message": "User created successfully"}
 
-@app.post("/login",tag="Auth")
+@app.post("/login",tag=["Auth"])
 def login(request: LoginRequest, db: Session = Depends(get_db)):
 
     user = db.query(User).filter(User.username == request.username).first()
@@ -125,7 +150,7 @@ def get_current_user(
     
 
 
-@app.get("/users",tags = "Get Users")
+@app.get("/users",tags = ["Get_Users"])
 def get_all_users(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
@@ -138,7 +163,7 @@ def get_all_users(
     }
     
     
-@app.put("/profile",tags = "Update Profile")
+@app.put("/profile",tags = ["Update_Profiles"])
 def update_profile(
     data: ProfileUpdate,
     current_user: User = Depends(get_current_user),
