@@ -6,12 +6,12 @@ from database import Base
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True, index=True)
-    username = Column(String, unique=True, index=True)
+    id = Column(Integer, primary_key=True)
+    username = Column(String, unique=True)
     password = Column(String)
 
-    profile = relationship("Profile", back_populates="owner", uselist=False)
-
+    profile = relationship("Profile", back_populates="user", uselist=False)
+    
 
 class Profile(Base):
     __tablename__ = "profiles"
@@ -21,4 +21,5 @@ class Profile(Base):
     age = Column(Integer)
 
     user_id = Column(Integer, ForeignKey("users.id"))
-    owner = relationship("User", back_populates="profile")
+
+    user = relationship("User", back_populates="profile")

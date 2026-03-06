@@ -1,8 +1,11 @@
 from logging.config import fileConfig
-
+import sys
+import os
+sys.path.append(os.getcwd())
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
-from database import Base
+from model import Base
+from model import User, Profile
 from alembic import context
 
 # this is the Alembic Config object, which provides
