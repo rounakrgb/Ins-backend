@@ -56,7 +56,7 @@ app = FastAPI(openapi_tags= tags_metadata)
 
 security = HTTPBearer(auto_error=False)
 
-Base.metadata.create_all(bind=engine)
+#Base.metadata.create_all(bind=engine)
 
 
 @app.get("/",tags = ["General"])
