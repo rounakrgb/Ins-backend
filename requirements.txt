@@ -7,3 +7,5 @@ bcrypt
 python-multipart
 pytest
 httpx
+redis 
+alembic

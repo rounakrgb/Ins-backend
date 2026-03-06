@@ -5,7 +5,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 import bcrypt
 from pydantic import BaseModel
-
+from redis_client import redis_client
 from database import engine, get_db
 from model import Base, User, Profile
 from jwt_token import create_access_token, decode_jwt_token
@@ -56,7 +56,7 @@ app = FastAPI(openapi_tags= tags_metadata)
 
 security = HTTPBearer(auto_error=False)
 
-Base.metadata.create_all(bind=engine)
+#Base.metadata.create_all(bind=engine)
 
 
 @app.get("/",tags = ["General"])
@@ -156,6 +156,19 @@ def get_all_users(
     db: Session = Depends(get_db)
 ):
 
+    cache_key = f"user:{current_user.id}"
+    
+    cached_user = redis_client.get(cache_key)
+    
+    if cached_user:
+        return {"source": "redis_cache", "data":cached_user}
+    
+    user_data = {
+        "id": current_user.id,
+        "username": current_user.username
+    }
+    
+    redis_client.set(cache_key, str(user_data), ex = 60)
     return {
         "id": current_user.id,
         "username": current_user.username,
